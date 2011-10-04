@@ -1,0 +1,24 @@
+// CLF has three modes, or levels of reasoning
+mode: type.
+per: mode. // persistent (called INT for intuitionstic in Anders' code)
+aff: mode. // affine
+lin: mode. // linear 
+
+// The simple, polarized types of CLF
+pos: type.
+neg: type.
+down:   mode -> neg -> pos.  // !A, @A, A, depending on mode
+one:    pos.                 // 1
+tensor: pos -> pos -> pos.   // S1 * S2
+atom:   t -> neg.            // p
+monad:  pos -> neg.          // {S}
+lolli:  pos -> neg -> neg.   // S -o A
+with:   neg -> neg -> neg.   // A1 & A2
+
+// Declared types are loaded into the "type" relation; declared constants
+// are loaded into the "con" relation.
+wSgn: world.
+typ: t -> rel @ wSgn.
+con: t -> neg -> rel @ wSgn.
+
+
