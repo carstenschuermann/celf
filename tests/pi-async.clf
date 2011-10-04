@@ -21,14 +21,6 @@ p_rep  : proc (rep P) -o {Exists u:proc P. 1}.
 p_out  : proc (out U V) -o {msg U V}.
 p_cin  : proc (cin U P) -o {Pi V:chan. msg U V -o {proc (P !V)}}.
 
-#query * 10 * 5 proc (new \!u. par (new \!m. out u m) (cin u \!x. zero)) -o {1}.
+% #query * 10 * 5 proc (new \u. par (new \m. out u m) (cin u \x. zero)) -o {1}.
 #query * * * 1 proc (par (new \!x. zero) (new \!y. zero)) -o {1}.
-
-
-
-j : type.
-dalksdfj
-asflkjas
-fd
-
 
