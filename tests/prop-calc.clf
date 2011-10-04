@@ -1,0 +1,65 @@
+o : type.
+=> : o -> o -> o.
+&' : o -> o -> o.
+true : o.
+|- : o -> type.
+'K : |- (=> A (=> B A)).
+'S : |- (=> (=> A (=> B C)) (=> (=> A B) (=> A C))).
+'ONE : |- true.
+'PAIR : |- (=> A (=> B (&' A B))).
+'LEFT : |- (=> (&' A B) A).
+'RIGHT : |- (=> (&' A B) B).
+'MP : |- (=> A B) -> |- A -> |- B.
+bang : o -> type.
+trueI : bang true.
+andI : bang A -> bang B -> bang (&' A B).
+andEL : bang (&' A B) -> bang A.
+andER : bang (&' A B) -> bang B.
+impliesI : (bang A -> bang B) -> bang (=> A B).
+impliesE : bang (=> A B) -> bang A -> bang B.
+bangUp : o -> type.
+bangDown : o -> type.
+trueIu : bangUp true.
+andIu : bangUp A -> bangUp B -> bangUp (&' A B).
+andEdL : bangDown (&' A B) -> bangDown A.
+andEdR : bangDown (&' A B) -> bangDown B.
+impIu : (bangDown A -> bangUp B) -> bangUp (=> A B).
+impEd : bangDown (=> A B) -> bangUp A -> bangDown B.
+close : bangDown A -> bangUp A.
+abs : (|- A -> |- B) -> |- (=> A B) -> type.
+aONE : abs (\x:|- A1. 'ONE) ('MP 'K 'ONE).
+aPAIR : abs (\x:|- A1. 'PAIR) ('MP 'K 'PAIR).
+aLEFT : abs (\x:|- A1. 'LEFT) ('MP 'K 'LEFT).
+aRIGHT : abs (\x:|- A1. 'RIGHT) ('MP 'K 'RIGHT).
+aK : abs (\x:|- A1. 'K) ('MP 'K 'K).
+aS : abs (\x:|- A1. 'S) ('MP 'K 'S).
+aMP :
+   abs (\p:|- A1. Q p) Q' -> abs (\p:|- A1. P p) P'
+      -> abs (\x:|- A1. 'MP (P x) (Q x)) ('MP ('MP 'S P') Q').
+comb : bang A -> |- A -> type.
+ctrue : comb trueI 'ONE.
+candI : comb Q Q' -> comb P P' -> comb (andI P Q) ('MP ('MP 'PAIR P') Q').
+candEL : comb P P' -> comb (andEL P) ('MP 'LEFT P').
+candER : comb P P' -> comb (andER P) ('MP 'RIGHT P').
+cimpliesI :
+   abs (\p:|- A1. PP' p) Q
+      -> (Pi x:bang A1. Pi y:|- A1.
+             comb x y -> (Pi B:o. abs (\z:|- B. y) ('MP 'K y))
+                -> comb (PP x) (PP' y))
+      -> comb (impliesI (\d:bang A1. PP d)) Q.
+cimpliesE : comb Q Q' -> comb P P' -> comb (impliesE P Q) ('MP P' Q').
+
+combdefn : |- A -> bang A -> type.
+cdK : combdefn 'K (impliesI (\p:bang A1. impliesI (\q:bang A2. p))).
+cdS :
+   combdefn 'S
+      (impliesI
+          (\p:bang (=> A1 (=> A2 A3)).
+              impliesI
+                 (\q:bang (=> A1 A2).
+                     impliesI (\r:bang A1. impliesE (impliesE p r) (impliesE q r))))).
+cdONE : combdefn 'ONE trueI.
+cdPAIR : combdefn 'PAIR (impliesI (\p:bang A1. impliesI (\q:bang A2. andI p q))).
+cdLEFT : combdefn 'LEFT (impliesI (\p:bang (&' A1 A2). andEL p)).
+cdRIGHT : combdefn 'RIGHT (impliesI (\p:bang (&' A1 A2). andER p)).
+cdMP : combdefn Q Q' -> combdefn P P' -> combdefn ('MP P Q) (impliesE P' Q').

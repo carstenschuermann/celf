@@ -1,0 +1,19 @@
+nat : type.
+z : nat.
+s : nat -> nat.
+
+list : type.
+nil : list.
+cons : nat -> list -> list.
+
+mset : type. % multisets represented as the type 'mset -> {1}'
+cell : mset -> nat -> {1}.
+
+same : list -> (mset -> {1}) -> type.
+same_nil : same nil (\!m. {1}).
+same_cons : same (cons N L) (\!m. {let {1} = cell m N in let {1} = S !m in 1})
+	<- same L S.
+
+#query * * * 1 same L
+	(\!m. {let {1} = cell m (s z) in let {1} = cell m z in 1}).
+
