@@ -177,6 +177,7 @@ fun reconstructDecl (ldec as (_, dec)) =
 							()
 						end
 			val () = if isQuery dec then () else Signatur.sigAddDecl dec
+			val () = SimpleDB.add dec
 		in () end handle
 		  ExnDeclError es =>
 			let val decstr = declToStr ldec
