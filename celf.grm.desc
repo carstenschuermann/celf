@@ -1,0 +1,2992 @@
+
+state 0:
+
+	Program : . DeclList 
+
+	ID	shift 4
+	QUERY	shift 3
+
+	Decl	goto 2
+	DeclList	goto 1
+	Program	goto 187
+
+	.	error
+
+
+state 1:
+
+	Program : DeclList .  (reduce by rule 0)
+
+
+
+	.	reduce by rule 0
+
+
+state 2:
+
+	DeclList : Decl . DeclList 
+	DeclList : Decl .  (reduce by rule 2)
+
+	ID	shift 4
+	QUERY	shift 3
+
+	Decl	goto 2
+	DeclList	goto 5
+
+	.	reduce by rule 2
+
+
+state 3:
+
+	Decl : QUERY . NumOpt NumOpt NumOpt Number AsyncType DOT 
+
+	TENSOR	shift 9
+	ONE	shift 8
+	NUM	shift 7
+
+	NumOpt	goto 6
+
+	.	error
+
+
+state 4:
+
+	Decl : ID . COLON Kind DOT 
+	Decl : ID . COLON AsyncType DOT 
+	Decl : ID . COLON TYPE EQUAL AsyncType DOT 
+	Decl : ID . COLON AsyncType EQUAL Obj DOT 
+
+	COLON	shift 10
+
+
+	.	error
+
+
+state 5:
+
+	DeclList : Decl DeclList .  (reduce by rule 1)
+
+
+
+	.	reduce by rule 1
+
+
+state 6:
+
+	Decl : QUERY NumOpt . NumOpt NumOpt Number AsyncType DOT 
+
+	TENSOR	shift 9
+	ONE	shift 8
+	NUM	shift 7
+
+	NumOpt	goto 11
+
+	.	error
+
+
+state 7:
+
+	NumOpt : NUM .  (reduce by rule 11)
+
+
+
+	.	reduce by rule 11
+
+
+state 8:
+
+	NumOpt : ONE .  (reduce by rule 10)
+
+
+
+	.	reduce by rule 10
+
+
+state 9:
+
+	NumOpt : TENSOR .  (reduce by rule 12)
+
+
+
+	.	reduce by rule 12
+
+
+state 10:
+
+	Decl : ID COLON . Kind DOT 
+	Decl : ID COLON . AsyncType DOT 
+	Decl : ID COLON . TYPE EQUAL AsyncType DOT 
+	Decl : ID COLON . AsyncType EQUAL Obj DOT 
+
+	ID	shift 26
+	TYPE	shift 25
+	PI	shift 24
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	Kind	goto 15
+	AsyncType	goto 14
+	UnifiedType	goto 13
+	AtomicType	goto 12
+
+	.	error
+
+
+state 11:
+
+	Decl : QUERY NumOpt NumOpt . NumOpt Number AsyncType DOT 
+
+	TENSOR	shift 9
+	ONE	shift 8
+	NUM	shift 7
+
+	NumOpt	goto 27
+
+	.	error
+
+
+state 12:
+
+	UnifiedType : AtomicType .  (reduce by rule 31)
+	AtomicType : AtomicType . Obj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 28
+
+	.	reduce by rule 31
+
+
+state 13:
+
+	Kind : UnifiedType . ARROW Kind 
+	AsyncType : UnifiedType .  (reduce by rule 19)
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 38
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 19
+
+
+state 14:
+
+	Decl : ID COLON AsyncType . DOT 
+	Decl : ID COLON AsyncType . EQUAL Obj DOT 
+
+	DOT	shift 44
+	EQUAL	shift 43
+
+
+	.	error
+
+
+state 15:
+
+	Decl : ID COLON Kind . DOT 
+
+	DOT	shift 45
+
+
+	.	error
+
+
+state 16:
+
+	UnifiedType : AFF . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 46
+	AtomicType	goto 12
+
+	.	error
+
+
+state 17:
+
+	UnifiedType : BANG . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 48
+	AtomicType	goto 12
+
+	.	error
+
+
+state 18:
+
+	UnifiedType : LEXISTS . TPattern COLON UnifiedType DOT UnifiedType 
+
+	UNDERSCORE	shift 55
+	ONE	shift 54
+	LBRACKET	shift 53
+	LPAREN	shift 52
+	BANG	shift 51
+	AFF	shift 50
+
+	TPattern	goto 49
+
+	.	error
+
+
+state 19:
+
+	UnifiedType : LPI . TPattern COLON UnifiedType DOT UnifiedType 
+
+	UNDERSCORE	shift 55
+	ONE	shift 54
+	LBRACKET	shift 53
+	LPAREN	shift 52
+	BANG	shift 51
+	AFF	shift 50
+
+	TPattern	goto 56
+
+	.	error
+
+
+state 20:
+
+	UnifiedType : LPAREN . UnifiedType RPAREN 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 57
+	AtomicType	goto 12
+
+	.	error
+
+
+state 21:
+
+	UnifiedType : EXISTS . ID COLON UnifiedType DOT UnifiedType 
+	UnifiedType : EXISTS . ID DOT UnifiedType 
+
+	ID	shift 58
+
+
+	.	error
+
+
+state 22:
+
+	UnifiedType : ONE .  (reduce by rule 33)
+
+
+
+	.	reduce by rule 33
+
+
+state 23:
+
+	UnifiedType : LCURLY . UnifiedType RCURLY 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 59
+	AtomicType	goto 12
+
+	.	error
+
+
+state 24:
+
+	Kind : PI . ID COLON UnifiedType DOT Kind 
+	Kind : PI . ID DOT Kind 
+	UnifiedType : PI . ID COLON UnifiedType DOT UnifiedType 
+	UnifiedType : PI . ID DOT UnifiedType 
+
+	ID	shift 60
+
+
+	.	error
+
+
+state 25:
+
+	Kind : TYPE .  (reduce by rule 13)
+	Decl : ID COLON TYPE . EQUAL AsyncType DOT 
+
+	EQUAL	shift 61
+
+
+	.	reduce by rule 13
+
+
+state 26:
+
+	AtomicType : ID .  (reduce by rule 17)
+
+
+
+	.	reduce by rule 17
+
+
+state 27:
+
+	Decl : QUERY NumOpt NumOpt NumOpt . Number AsyncType DOT 
+
+	ONE	shift 64
+	NUM	shift 63
+
+	Number	goto 62
+
+	.	error
+
+
+state 28:
+
+	AtomicType : AtomicType Obj .  (reduce by rule 18)
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+
+	ONE	shift 72
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	reduce by rule 18
+
+
+state 29:
+
+	Obj : LPAREN . Obj RPAREN 
+	Obj : LPAREN . Obj COLON AsyncType RPAREN 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 73
+
+	.	error
+
+
+state 30:
+
+	Obj : LANGLE . Obj COMMA Obj RANGLE 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 74
+
+	.	error
+
+
+state 31:
+
+	Obj : LAMBDA . OPattern COLON UnifiedType DOT Obj 
+	Obj : LAMBDA . OPattern DOT Obj 
+
+	ID	shift 81
+	ONE	shift 80
+	LBRACKET	shift 79
+	LPAREN	shift 78
+	BANG	shift 77
+	AFF	shift 76
+
+	OPattern	goto 75
+
+	.	error
+
+
+state 32:
+
+	Obj : LCURLY . ExpObj RCURLY 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LET	shift 85
+	LBRACKET	shift 69
+	LPAREN	shift 84
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	ExpObj	goto 83
+	MonadObj	goto 82
+
+	.	error
+
+
+state 33:
+
+	Obj : UNDERSCORE .  (reduce by rule 50)
+
+
+
+	.	reduce by rule 50
+
+
+state 34:
+
+	Obj : ID .  (reduce by rule 44)
+
+
+
+	.	reduce by rule 44
+
+
+state 35:
+
+	UnifiedType : UnifiedType BACKAFFLOLLI . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 86
+	AtomicType	goto 12
+
+	.	error
+
+
+state 36:
+
+	UnifiedType : UnifiedType AFFLOLLI . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 87
+	AtomicType	goto 12
+
+	.	error
+
+
+state 37:
+
+	UnifiedType : UnifiedType BACKARROW . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 88
+	AtomicType	goto 12
+
+	.	error
+
+
+state 38:
+
+	Kind : UnifiedType ARROW . Kind 
+	UnifiedType : UnifiedType ARROW . UnifiedType 
+
+	ID	shift 26
+	TYPE	shift 91
+	PI	shift 24
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	Kind	goto 90
+	UnifiedType	goto 89
+	AtomicType	goto 12
+
+	.	error
+
+
+state 39:
+
+	UnifiedType : UnifiedType TENSOR . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 92
+	AtomicType	goto 12
+
+	.	error
+
+
+state 40:
+
+	UnifiedType : UnifiedType AMPH . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 93
+	AtomicType	goto 12
+
+	.	error
+
+
+state 41:
+
+	UnifiedType : UnifiedType BACKLOLLI . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 94
+	AtomicType	goto 12
+
+	.	error
+
+
+state 42:
+
+	UnifiedType : UnifiedType LOLLI . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 95
+	AtomicType	goto 12
+
+	.	error
+
+
+state 43:
+
+	Decl : ID COLON AsyncType EQUAL . Obj DOT 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 96
+
+	.	error
+
+
+state 44:
+
+	Decl : ID COLON AsyncType DOT .  (reduce by rule 4)
+
+
+
+	.	reduce by rule 4
+
+
+state 45:
+
+	Decl : ID COLON Kind DOT .  (reduce by rule 3)
+
+
+
+	.	reduce by rule 3
+
+
+state 46:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : AFF UnifiedType .  (reduce by rule 37)
+
+
+
+	.	reduce by rule 37
+
+
+state 47:
+
+	UnifiedType : PI . ID COLON UnifiedType DOT UnifiedType 
+	UnifiedType : PI . ID DOT UnifiedType 
+
+	ID	shift 98
+
+
+	.	error
+
+
+state 48:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : BANG UnifiedType .  (reduce by rule 38)
+
+
+
+	.	reduce by rule 38
+
+
+state 49:
+
+	UnifiedType : LEXISTS TPattern . COLON UnifiedType DOT UnifiedType 
+
+	COLON	shift 99
+
+
+	.	error
+
+
+state 50:
+
+	TPattern : AFF . UNDERSCORE 
+
+	UNDERSCORE	shift 100
+
+
+	.	error
+
+
+state 51:
+
+	TPattern : BANG . UNDERSCORE 
+	TPattern : BANG . ID 
+
+	ID	shift 102
+	UNDERSCORE	shift 101
+
+
+	.	error
+
+
+state 52:
+
+	TPattern : LPAREN . TPattern RPAREN 
+
+	UNDERSCORE	shift 55
+	ONE	shift 54
+	LBRACKET	shift 53
+	LPAREN	shift 52
+	BANG	shift 51
+	AFF	shift 50
+
+	TPattern	goto 103
+
+	.	error
+
+
+state 53:
+
+	TPattern : LBRACKET . TPatternPair RBRACKET 
+
+	UNDERSCORE	shift 55
+	ONE	shift 54
+	LBRACKET	shift 53
+	LPAREN	shift 52
+	BANG	shift 51
+	AFF	shift 50
+
+	TPattern	goto 105
+	TPatternPair	goto 104
+
+	.	error
+
+
+state 54:
+
+	TPattern : ONE .  (reduce by rule 67)
+
+
+
+	.	reduce by rule 67
+
+
+state 55:
+
+	TPattern : UNDERSCORE .  (reduce by rule 69)
+
+
+
+	.	reduce by rule 69
+
+
+state 56:
+
+	UnifiedType : LPI TPattern . COLON UnifiedType DOT UnifiedType 
+
+	COLON	shift 106
+
+
+	.	error
+
+
+state 57:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : LPAREN UnifiedType . RPAREN 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	RPAREN	shift 107
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 58:
+
+	UnifiedType : EXISTS ID . COLON UnifiedType DOT UnifiedType 
+	UnifiedType : EXISTS ID . DOT UnifiedType 
+
+	COLON	shift 109
+	DOT	shift 108
+
+
+	.	error
+
+
+state 59:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : LCURLY UnifiedType . RCURLY 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	RCURLY	shift 110
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 60:
+
+	Kind : PI ID . COLON UnifiedType DOT Kind 
+	Kind : PI ID . DOT Kind 
+	UnifiedType : PI ID . COLON UnifiedType DOT UnifiedType 
+	UnifiedType : PI ID . DOT UnifiedType 
+
+	COLON	shift 112
+	DOT	shift 111
+
+
+	.	error
+
+
+state 61:
+
+	Decl : ID COLON TYPE EQUAL . AsyncType DOT 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	AsyncType	goto 114
+	UnifiedType	goto 113
+	AtomicType	goto 12
+
+	.	error
+
+
+state 62:
+
+	Decl : QUERY NumOpt NumOpt NumOpt Number . AsyncType DOT 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	AsyncType	goto 115
+	UnifiedType	goto 113
+	AtomicType	goto 12
+
+	.	error
+
+
+state 63:
+
+	Number : NUM .  (reduce by rule 9)
+
+
+
+	.	reduce by rule 9
+
+
+state 64:
+
+	Number : ONE .  (reduce by rule 8)
+
+
+
+	.	reduce by rule 8
+
+
+state 65:
+
+	Obj : Obj MonadObj .  (reduce by rule 45)
+
+
+
+	.	reduce by rule 45
+
+
+state 66:
+
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+	MonadObj : Obj .  (reduce by rule 56)
+
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	reduce by rule 56
+
+
+state 67:
+
+	MonadObj : AFF . Obj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 116
+
+	.	error
+
+
+state 68:
+
+	MonadObj : BANG . Obj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 117
+
+	.	error
+
+
+state 69:
+
+	MonadObj : LBRACKET . MonadObj COMMA MonadObj RBRACKET 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 118
+
+	.	error
+
+
+state 70:
+
+	Obj : Obj PROJRIGHT .  (reduce by rule 47)
+
+
+
+	.	reduce by rule 47
+
+
+state 71:
+
+	Obj : Obj PROJLEFT .  (reduce by rule 46)
+
+
+
+	.	reduce by rule 46
+
+
+state 72:
+
+	MonadObj : ONE .  (reduce by rule 55)
+
+
+
+	.	reduce by rule 55
+
+
+state 73:
+
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+	Obj : LPAREN Obj . RPAREN 
+	Obj : LPAREN Obj . COLON AsyncType RPAREN 
+
+	ID	shift 34
+	COLON	shift 120
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	RPAREN	shift 119
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	error
+
+
+state 74:
+
+	Obj : LANGLE Obj . COMMA Obj RANGLE 
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	COMMA	shift 121
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	error
+
+
+state 75:
+
+	Obj : LAMBDA OPattern . COLON UnifiedType DOT Obj 
+	Obj : LAMBDA OPattern . DOT Obj 
+
+	COLON	shift 123
+	DOT	shift 122
+
+
+	.	error
+
+
+state 76:
+
+	OPattern : AFF . ID 
+
+	ID	shift 124
+
+
+	.	error
+
+
+state 77:
+
+	OPattern : BANG . ID 
+
+	ID	shift 125
+
+
+	.	error
+
+
+state 78:
+
+	OPattern : LPAREN . OPattern RPAREN 
+
+	ID	shift 81
+	ONE	shift 80
+	LBRACKET	shift 79
+	LPAREN	shift 78
+	BANG	shift 77
+	AFF	shift 76
+
+	OPattern	goto 126
+
+	.	error
+
+
+state 79:
+
+	OPattern : LBRACKET . OPatternPair RBRACKET 
+
+	ID	shift 81
+	ONE	shift 80
+	LBRACKET	shift 79
+	LPAREN	shift 78
+	BANG	shift 77
+	AFF	shift 76
+
+	OPattern	goto 128
+	OPatternPair	goto 127
+
+	.	error
+
+
+state 80:
+
+	OPattern : ONE .  (reduce by rule 59)
+
+
+
+	.	reduce by rule 59
+
+
+state 81:
+
+	OPattern : ID .  (reduce by rule 61)
+
+
+
+	.	reduce by rule 61
+
+
+state 82:
+
+	ExpObj : MonadObj .  (reduce by rule 52)
+
+
+
+	.	reduce by rule 52
+
+
+state 83:
+
+	Obj : LCURLY ExpObj . RCURLY 
+
+	RCURLY	shift 129
+
+
+	.	error
+
+
+state 84:
+
+	Obj : LPAREN . Obj RPAREN 
+	Obj : LPAREN . Obj COLON AsyncType RPAREN 
+	ExpObj : LPAREN . ExpObj RPAREN 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LET	shift 85
+	LBRACKET	shift 69
+	LPAREN	shift 84
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 131
+	ExpObj	goto 130
+	MonadObj	goto 82
+
+	.	error
+
+
+state 85:
+
+	ExpObj : LET . LCURLY OPattern RCURLY EQUAL Obj IN ExpObj 
+
+	LCURLY	shift 132
+
+
+	.	error
+
+
+state 86:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType BACKAFFLOLLI UnifiedType .  (reduce by rule 23)
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	AFFLOLLI	shift 36
+
+
+	.	reduce by rule 23
+
+
+state 87:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType AFFLOLLI UnifiedType .  (reduce by rule 22)
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	AFFLOLLI	shift 36
+
+
+	.	reduce by rule 22
+
+
+state 88:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType BACKARROW UnifiedType .  (reduce by rule 25)
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	AFFLOLLI	shift 36
+
+
+	.	reduce by rule 25
+
+
+state 89:
+
+	Kind : UnifiedType . ARROW Kind 
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType ARROW UnifiedType .  (reduce by rule 24)
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 38
+	AFFLOLLI	shift 36
+
+
+	.	reduce by rule 24
+
+
+state 90:
+
+	Kind : UnifiedType ARROW Kind .  (reduce by rule 15)
+
+
+
+	.	reduce by rule 15
+
+
+state 91:
+
+	Kind : TYPE .  (reduce by rule 13)
+
+
+
+	.	reduce by rule 13
+
+
+state 92:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : UnifiedType TENSOR UnifiedType .  (reduce by rule 32)
+
+	AMPH	shift 40
+	TENSOR	shift 39
+
+
+	.	reduce by rule 32
+
+
+state 93:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType AMPH UnifiedType .  (reduce by rule 26)
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	AMPH	shift 40
+	TENSOR	shift 39
+
+
+	.	reduce by rule 26
+
+
+state 94:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType BACKLOLLI UnifiedType .  (reduce by rule 21)
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	AFFLOLLI	shift 36
+
+
+	.	reduce by rule 21
+
+
+state 95:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType LOLLI UnifiedType .  (reduce by rule 20)
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	AFFLOLLI	shift 36
+
+
+	.	reduce by rule 20
+
+
+state 96:
+
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+	Decl : ID COLON AsyncType EQUAL Obj . DOT 
+
+	ID	shift 34
+	DOT	shift 133
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	error
+
+
+state 97:
+
+	UnifiedType : UnifiedType ARROW . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 134
+	AtomicType	goto 12
+
+	.	error
+
+
+state 98:
+
+	UnifiedType : PI ID . COLON UnifiedType DOT UnifiedType 
+	UnifiedType : PI ID . DOT UnifiedType 
+
+	COLON	shift 136
+	DOT	shift 135
+
+
+	.	error
+
+
+state 99:
+
+	UnifiedType : LEXISTS TPattern COLON . UnifiedType DOT UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 137
+	AtomicType	goto 12
+
+	.	error
+
+
+state 100:
+
+	TPattern : AFF UNDERSCORE .  (reduce by rule 70)
+
+
+
+	.	reduce by rule 70
+
+
+state 101:
+
+	TPattern : BANG UNDERSCORE .  (reduce by rule 71)
+
+
+
+	.	reduce by rule 71
+
+
+state 102:
+
+	TPattern : BANG ID .  (reduce by rule 72)
+
+
+
+	.	reduce by rule 72
+
+
+state 103:
+
+	TPattern : LPAREN TPattern . RPAREN 
+
+	RPAREN	shift 138
+
+
+	.	error
+
+
+state 104:
+
+	TPattern : LBRACKET TPatternPair . RBRACKET 
+
+	RBRACKET	shift 139
+
+
+	.	error
+
+
+state 105:
+
+	TPatternPair : TPattern . COMMA TPatternPair 
+	TPatternPair : TPattern . COMMA TPattern 
+
+	COMMA	shift 140
+
+
+	.	error
+
+
+state 106:
+
+	UnifiedType : LPI TPattern COLON . UnifiedType DOT UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 141
+	AtomicType	goto 12
+
+	.	error
+
+
+state 107:
+
+	UnifiedType : LPAREN UnifiedType RPAREN .  (reduce by rule 39)
+
+
+
+	.	reduce by rule 39
+
+
+state 108:
+
+	UnifiedType : EXISTS ID DOT . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 142
+	AtomicType	goto 12
+
+	.	error
+
+
+state 109:
+
+	UnifiedType : EXISTS ID COLON . UnifiedType DOT UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 143
+	AtomicType	goto 12
+
+	.	error
+
+
+state 110:
+
+	UnifiedType : LCURLY UnifiedType RCURLY .  (reduce by rule 30)
+
+
+
+	.	reduce by rule 30
+
+
+state 111:
+
+	Kind : PI ID DOT . Kind 
+	UnifiedType : PI ID DOT . UnifiedType 
+
+	ID	shift 26
+	TYPE	shift 91
+	PI	shift 24
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	Kind	goto 145
+	UnifiedType	goto 144
+	AtomicType	goto 12
+
+	.	error
+
+
+state 112:
+
+	Kind : PI ID COLON . UnifiedType DOT Kind 
+	UnifiedType : PI ID COLON . UnifiedType DOT UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 146
+	AtomicType	goto 12
+
+	.	error
+
+
+state 113:
+
+	AsyncType : UnifiedType .  (reduce by rule 19)
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 19
+
+
+state 114:
+
+	Decl : ID COLON TYPE EQUAL AsyncType . DOT 
+
+	DOT	shift 147
+
+
+	.	error
+
+
+state 115:
+
+	Decl : QUERY NumOpt NumOpt NumOpt Number AsyncType . DOT 
+
+	DOT	shift 148
+
+
+	.	error
+
+
+state 116:
+
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+	MonadObj : AFF Obj .  (reduce by rule 57)
+
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	reduce by rule 57
+
+
+state 117:
+
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+	MonadObj : BANG Obj .  (reduce by rule 58)
+
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	reduce by rule 58
+
+
+state 118:
+
+	MonadObj : LBRACKET MonadObj . COMMA MonadObj RBRACKET 
+
+	COMMA	shift 149
+
+
+	.	error
+
+
+state 119:
+
+	Obj : LPAREN Obj RPAREN .  (reduce by rule 48)
+
+
+
+	.	reduce by rule 48
+
+
+state 120:
+
+	Obj : LPAREN Obj COLON . AsyncType RPAREN 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	AsyncType	goto 150
+	UnifiedType	goto 113
+	AtomicType	goto 12
+
+	.	error
+
+
+state 121:
+
+	Obj : LANGLE Obj COMMA . Obj RANGLE 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 151
+
+	.	error
+
+
+state 122:
+
+	Obj : LAMBDA OPattern DOT . Obj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 152
+
+	.	error
+
+
+state 123:
+
+	Obj : LAMBDA OPattern COLON . UnifiedType DOT Obj 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 153
+	AtomicType	goto 12
+
+	.	error
+
+
+state 124:
+
+	OPattern : AFF ID .  (reduce by rule 62)
+
+
+
+	.	reduce by rule 62
+
+
+state 125:
+
+	OPattern : BANG ID .  (reduce by rule 63)
+
+
+
+	.	reduce by rule 63
+
+
+state 126:
+
+	OPattern : LPAREN OPattern . RPAREN 
+
+	RPAREN	shift 154
+
+
+	.	error
+
+
+state 127:
+
+	OPattern : LBRACKET OPatternPair . RBRACKET 
+
+	RBRACKET	shift 155
+
+
+	.	error
+
+
+state 128:
+
+	OPatternPair : OPattern . COMMA OPatternPair 
+	OPatternPair : OPattern . COMMA OPattern 
+
+	COMMA	shift 156
+
+
+	.	error
+
+
+state 129:
+
+	Obj : LCURLY ExpObj RCURLY .  (reduce by rule 43)
+
+
+
+	.	reduce by rule 43
+
+
+state 130:
+
+	ExpObj : LPAREN ExpObj . RPAREN 
+
+	RPAREN	shift 157
+
+
+	.	error
+
+
+state 131:
+
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+	Obj : LPAREN Obj . RPAREN 
+	Obj : LPAREN Obj . COLON AsyncType RPAREN 
+	MonadObj : Obj .  (reduce by rule 56)
+
+	ID	shift 34
+	COLON	shift 120
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	RPAREN	shift 119
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	error
+
+
+state 132:
+
+	ExpObj : LET LCURLY . OPattern RCURLY EQUAL Obj IN ExpObj 
+
+	ID	shift 81
+	ONE	shift 80
+	LBRACKET	shift 79
+	LPAREN	shift 78
+	BANG	shift 77
+	AFF	shift 76
+
+	OPattern	goto 158
+
+	.	error
+
+
+state 133:
+
+	Decl : ID COLON AsyncType EQUAL Obj DOT .  (reduce by rule 6)
+
+
+
+	.	reduce by rule 6
+
+
+state 134:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType ARROW UnifiedType .  (reduce by rule 24)
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	AFFLOLLI	shift 36
+
+
+	.	reduce by rule 24
+
+
+state 135:
+
+	UnifiedType : PI ID DOT . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 159
+	AtomicType	goto 12
+
+	.	error
+
+
+state 136:
+
+	UnifiedType : PI ID COLON . UnifiedType DOT UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 160
+	AtomicType	goto 12
+
+	.	error
+
+
+state 137:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : LEXISTS TPattern COLON UnifiedType . DOT UnifiedType 
+
+	DOT	shift 161
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 138:
+
+	TPattern : LPAREN TPattern RPAREN .  (reduce by rule 73)
+
+
+
+	.	reduce by rule 73
+
+
+state 139:
+
+	TPattern : LBRACKET TPatternPair RBRACKET .  (reduce by rule 68)
+
+
+
+	.	reduce by rule 68
+
+
+state 140:
+
+	TPatternPair : TPattern COMMA . TPatternPair 
+	TPatternPair : TPattern COMMA . TPattern 
+
+	UNDERSCORE	shift 55
+	ONE	shift 54
+	LBRACKET	shift 53
+	LPAREN	shift 52
+	BANG	shift 51
+	AFF	shift 50
+
+	TPattern	goto 163
+	TPatternPair	goto 162
+
+	.	error
+
+
+state 141:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : LPI TPattern COLON UnifiedType . DOT UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	DOT	shift 164
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 142:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : EXISTS ID DOT UnifiedType .  (reduce by rule 35)
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 35
+
+
+state 143:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : EXISTS ID COLON UnifiedType . DOT UnifiedType 
+
+	DOT	shift 165
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 144:
+
+	Kind : UnifiedType . ARROW Kind 
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : PI ID DOT UnifiedType .  (reduce by rule 28)
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 38
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 28
+
+
+state 145:
+
+	Kind : PI ID DOT Kind .  (reduce by rule 16)
+
+
+
+	.	reduce by rule 16
+
+
+state 146:
+
+	Kind : PI ID COLON UnifiedType . DOT Kind 
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : PI ID COLON UnifiedType . DOT UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	DOT	shift 166
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 147:
+
+	Decl : ID COLON TYPE EQUAL AsyncType DOT .  (reduce by rule 5)
+
+
+
+	.	reduce by rule 5
+
+
+state 148:
+
+	Decl : QUERY NumOpt NumOpt NumOpt Number AsyncType DOT .  (reduce by rule 7)
+
+
+
+	.	reduce by rule 7
+
+
+state 149:
+
+	MonadObj : LBRACKET MonadObj COMMA . MonadObj RBRACKET 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 167
+
+	.	error
+
+
+state 150:
+
+	Obj : LPAREN Obj COLON AsyncType . RPAREN 
+
+	RPAREN	shift 168
+
+
+	.	error
+
+
+state 151:
+
+	Obj : LANGLE Obj COMMA Obj . RANGLE 
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	RANGLE	shift 169
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	error
+
+
+state 152:
+
+	Obj : LAMBDA OPattern DOT Obj .  (reduce by rule 41)
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	reduce by rule 41
+
+
+state 153:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	Obj : LAMBDA OPattern COLON UnifiedType . DOT Obj 
+
+	DOT	shift 170
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 154:
+
+	OPattern : LPAREN OPattern RPAREN .  (reduce by rule 64)
+
+
+
+	.	reduce by rule 64
+
+
+state 155:
+
+	OPattern : LBRACKET OPatternPair RBRACKET .  (reduce by rule 60)
+
+
+
+	.	reduce by rule 60
+
+
+state 156:
+
+	OPatternPair : OPattern COMMA . OPatternPair 
+	OPatternPair : OPattern COMMA . OPattern 
+
+	ID	shift 81
+	ONE	shift 80
+	LBRACKET	shift 79
+	LPAREN	shift 78
+	BANG	shift 77
+	AFF	shift 76
+
+	OPattern	goto 172
+	OPatternPair	goto 171
+
+	.	error
+
+
+state 157:
+
+	ExpObj : LPAREN ExpObj RPAREN .  (reduce by rule 53)
+
+
+
+	.	reduce by rule 53
+
+
+state 158:
+
+	ExpObj : LET LCURLY OPattern . RCURLY EQUAL Obj IN ExpObj 
+
+	RCURLY	shift 173
+
+
+	.	error
+
+
+state 159:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : PI ID DOT UnifiedType .  (reduce by rule 28)
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 28
+
+
+state 160:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : PI ID COLON UnifiedType . DOT UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	DOT	shift 174
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	error
+
+
+state 161:
+
+	UnifiedType : LEXISTS TPattern COLON UnifiedType DOT . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 175
+	AtomicType	goto 12
+
+	.	error
+
+
+state 162:
+
+	TPatternPair : TPattern COMMA TPatternPair .  (reduce by rule 74)
+
+
+
+	.	reduce by rule 74
+
+
+state 163:
+
+	TPatternPair : TPattern . COMMA TPatternPair 
+	TPatternPair : TPattern . COMMA TPattern 
+	TPatternPair : TPattern COMMA TPattern .  (reduce by rule 75)
+
+	COMMA	shift 140
+
+
+	.	reduce by rule 75
+
+
+state 164:
+
+	UnifiedType : LPI TPattern COLON UnifiedType DOT . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 176
+	AtomicType	goto 12
+
+	.	error
+
+
+state 165:
+
+	UnifiedType : EXISTS ID COLON UnifiedType DOT . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 177
+	AtomicType	goto 12
+
+	.	error
+
+
+state 166:
+
+	Kind : PI ID COLON UnifiedType DOT . Kind 
+	UnifiedType : PI ID COLON UnifiedType DOT . UnifiedType 
+
+	ID	shift 26
+	TYPE	shift 91
+	PI	shift 24
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	Kind	goto 179
+	UnifiedType	goto 178
+	AtomicType	goto 12
+
+	.	error
+
+
+state 167:
+
+	MonadObj : LBRACKET MonadObj COMMA MonadObj . RBRACKET 
+
+	RBRACKET	shift 180
+
+
+	.	error
+
+
+state 168:
+
+	Obj : LPAREN Obj COLON AsyncType RPAREN .  (reduce by rule 49)
+
+
+
+	.	reduce by rule 49
+
+
+state 169:
+
+	Obj : LANGLE Obj COMMA Obj RANGLE .  (reduce by rule 42)
+
+
+
+	.	reduce by rule 42
+
+
+state 170:
+
+	Obj : LAMBDA OPattern COLON UnifiedType DOT . Obj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 181
+
+	.	error
+
+
+state 171:
+
+	OPatternPair : OPattern COMMA OPatternPair .  (reduce by rule 65)
+
+
+
+	.	reduce by rule 65
+
+
+state 172:
+
+	OPatternPair : OPattern . COMMA OPatternPair 
+	OPatternPair : OPattern . COMMA OPattern 
+	OPatternPair : OPattern COMMA OPattern .  (reduce by rule 66)
+
+	COMMA	shift 156
+
+
+	.	reduce by rule 66
+
+
+state 173:
+
+	ExpObj : LET LCURLY OPattern RCURLY . EQUAL Obj IN ExpObj 
+
+	EQUAL	shift 182
+
+
+	.	error
+
+
+state 174:
+
+	UnifiedType : PI ID COLON UnifiedType DOT . UnifiedType 
+
+	ID	shift 26
+	PI	shift 47
+	LCURLY	shift 23
+	ONE	shift 22
+	EXISTS	shift 21
+	LPAREN	shift 20
+	LPI	shift 19
+	LEXISTS	shift 18
+	BANG	shift 17
+	AFF	shift 16
+
+	UnifiedType	goto 183
+	AtomicType	goto 12
+
+	.	error
+
+
+state 175:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : LEXISTS TPattern COLON UnifiedType DOT UnifiedType .  (reduce by rule 36)
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 36
+
+
+state 176:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : LPI TPattern COLON UnifiedType DOT UnifiedType .  (reduce by rule 29)
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 29
+
+
+state 177:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+	UnifiedType : EXISTS ID COLON UnifiedType DOT UnifiedType .  (reduce by rule 34)
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 34
+
+
+state 178:
+
+	Kind : UnifiedType . ARROW Kind 
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : PI ID COLON UnifiedType DOT UnifiedType .  (reduce by rule 27)
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 38
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 27
+
+
+state 179:
+
+	Kind : PI ID COLON UnifiedType DOT Kind .  (reduce by rule 14)
+
+
+
+	.	reduce by rule 14
+
+
+state 180:
+
+	MonadObj : LBRACKET MonadObj COMMA MonadObj RBRACKET .  (reduce by rule 54)
+
+
+
+	.	reduce by rule 54
+
+
+state 181:
+
+	Obj : LAMBDA OPattern COLON UnifiedType DOT Obj .  (reduce by rule 40)
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	reduce by rule 40
+
+
+state 182:
+
+	ExpObj : LET LCURLY OPattern RCURLY EQUAL . Obj IN ExpObj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LPAREN	shift 29
+
+	Obj	goto 184
+
+	.	error
+
+
+state 183:
+
+	UnifiedType : UnifiedType . LOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKLOLLI UnifiedType 
+	UnifiedType : UnifiedType . AFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . BACKAFFLOLLI UnifiedType 
+	UnifiedType : UnifiedType . ARROW UnifiedType 
+	UnifiedType : UnifiedType . BACKARROW UnifiedType 
+	UnifiedType : UnifiedType . AMPH UnifiedType 
+	UnifiedType : PI ID COLON UnifiedType DOT UnifiedType .  (reduce by rule 27)
+	UnifiedType : UnifiedType . TENSOR UnifiedType 
+
+	LOLLI	shift 42
+	BACKLOLLI	shift 41
+	AMPH	shift 40
+	TENSOR	shift 39
+	ARROW	shift 97
+	BACKARROW	shift 37
+	AFFLOLLI	shift 36
+	BACKAFFLOLLI	shift 35
+
+
+	.	reduce by rule 27
+
+
+state 184:
+
+	Obj : Obj . MonadObj 
+	Obj : Obj . PROJLEFT 
+	Obj : Obj . PROJRIGHT 
+	ExpObj : LET LCURLY OPattern RCURLY EQUAL Obj . IN ExpObj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	IN	shift 185
+	PROJLEFT	shift 71
+	PROJRIGHT	shift 70
+	LBRACKET	shift 69
+	LPAREN	shift 29
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	MonadObj	goto 65
+
+	.	error
+
+
+state 185:
+
+	ExpObj : LET LCURLY OPattern RCURLY EQUAL Obj IN . ExpObj 
+
+	ID	shift 34
+	UNDERSCORE	shift 33
+	LCURLY	shift 32
+	ONE	shift 72
+	LAMBDA	shift 31
+	LANGLE	shift 30
+	LET	shift 85
+	LBRACKET	shift 69
+	LPAREN	shift 84
+	BANG	shift 68
+	AFF	shift 67
+
+	Obj	goto 66
+	ExpObj	goto 186
+	MonadObj	goto 82
+
+	.	error
+
+
+state 186:
+
+	ExpObj : LET LCURLY OPattern RCURLY EQUAL Obj IN ExpObj .  (reduce by rule 51)
+
+
+
+	.	reduce by rule 51
+
+
+state 187:
+
+
+	EOF	accept
+
+
+	.	error
+
+415 of 1033 action table entries left after compaction
+140 goto table entries

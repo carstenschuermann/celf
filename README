@@ -1,0 +1,40 @@
+Celf README
+
+Celf can be compiled with several different ML compilers.
+Here is instructions for a few of them:
+
+To compile Celf with SML/NJ:
+
+1. Compile the source into a heapimage (.heapimg.<arch>-<opsys>):
+
+      sml < main-export.sml
+
+2. Create a shell script to load the runtime with the heap image,
+   e.g. with the .mkexec script:
+
+      ./.mkexec `which sml` `pwd` celf
+
+
+To compile Celf with MLton:
+
+1. Compile the lexer definition, parser definition, and the rest
+   of the source:
+
+      mllex celf.lex
+      mlyacc celf.grm
+      mlton celf.mlb
+
+
+TROUBLESHOOTING
+If you get the following error when compiling with SML/NJ
+
+      ["/usr/lib/smlnj/bin/ml-yacc" "" "celf.grm"]
+      Usage: ml-yacc filename
+      sources.cm:25.1-25.9 Error: tool "ML-Yacc" failed: "/usr/lib/smlnj/bin/ml-yacc" "" "celf.grm"
+
+then simply run ml-yacc manually by removing the superfluous argument added by
+the compilation manager and rerun sml:
+
+      /usr/lib/smlnj/bin/ml-yacc celf.grm
+      sml < main-export.sml
+
