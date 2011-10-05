@@ -19,6 +19,9 @@ and transS (typS: SyncType.t) =
   | TAffi typA => T.Down' (T.Aff', transA typA)
   | TBang typA => T.Down' (T.Per', transA typA)
 
+fun printSubord s (h1, h2) = 
+   print (s ^ T.strHead h1 ^ " <| " ^ T.strHead h2 ^ "\n")
+
 fun add dec = 
   let val print = print in
     case dec of
@@ -46,14 +49,11 @@ fun add dec =
           (* Add new subordination information to database *)
           val () = app ClfTables.assertSubord subords
           val _ = ClfSearch.saturateWSubord T.MapWorld.empty
-
-          fun printme (h1, h2) = 
-            print ("    " ^ T.strHead h1 ^ " <| " ^ T.strHead h2 ^ "\n")
         in 
           print ("==SimpleDB: Constant Declaration ")
           ; print (c ^ ": " ^ T.strNeg ty ^ "==\n")
           ; print ("    Discovered subordination facts: \n")
-          ; app printme subords 
+          ; app (printSubord "    ") subords 
         end
     | TypeAbbrev _ => () (* Nothing to do *)
     | ObjAbbrev _ => () (* Nothing to do *)
