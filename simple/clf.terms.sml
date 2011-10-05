@@ -6,11 +6,15 @@ struct
    
    and world_view =
       WSgn
+    | WHS of pos
+    | WHA of neg
    and world = injWorld of world_view
    
    and rel_view =
       Typ of Symbol.symbol
     | Con of Symbol.symbol * neg
+    | HeadS of pos * head
+    | HeadA of neg * head
    and rel = injRel of rel_view
    
    and mode_view =
@@ -32,6 +36,11 @@ struct
     | With of neg * neg
    and neg = injNeg of neg_view
    
+   and head_view =
+      Monadic
+    | Atomic of Symbol.symbol
+   and head = injHead of head_view
+   
 
    (* Constructor-specific projections, injections, and aborts *)
 
@@ -40,9 +49,14 @@ struct
    fun prjMode (injMode x) = x
    fun prjPos (injPos x) = x
    fun prjNeg (injNeg x) = x
+   fun prjHead (injHead x) = x
    val WSgn' = injWorld WSgn
+   val WHS' = injWorld o WHS
+   val WHA' = injWorld o WHA
    val Typ' = injRel o Typ
    val Con' = injRel o Con
+   val HeadS' = injRel o HeadS
+   val HeadA' = injRel o HeadA
    val Per' = injMode Per
    val Aff' = injMode Aff
    val Lin' = injMode Lin
@@ -53,6 +67,8 @@ struct
    val Monad' = injNeg o Monad
    val Lolli' = injNeg o Lolli
    val With' = injNeg o With
+   val Monadic' = injHead Monadic
+   val Atomic' = injHead o Atomic
    
 
    (* String encoding functions *)
@@ -63,6 +79,14 @@ struct
       case prjWorld x_ of
          WSgn =>
          "wSgn"
+       | WHS x_0 =>
+         ("(wHS"
+          ^ " " ^ strPos x_0
+          ^ ")")
+       | WHA x_0 =>
+         ("(wHA"
+          ^ " " ^ strNeg x_0
+          ^ ")")
    
    and strRel x_ = 
       case prjRel x_ of
@@ -74,6 +98,16 @@ struct
          ("(con"
           ^ " " ^ Symbol.name x_0
           ^ " " ^ strNeg x_1
+          ^ ")")
+       | HeadS (x_0, x_1) =>
+         ("(headS"
+          ^ " " ^ strPos x_0
+          ^ " " ^ strHead x_1
+          ^ ")")
+       | HeadA (x_0, x_1) =>
+         ("(headA"
+          ^ " " ^ strNeg x_0
+          ^ " " ^ strHead x_1
           ^ ")")
    
    and strMode x_ = 
@@ -121,6 +155,15 @@ struct
           ^ " " ^ strNeg x_1
           ^ ")")
    
+   and strHead x_ = 
+      case prjHead x_ of
+         Monadic =>
+         "monadic"
+       | Atomic x_0 =>
+         ("(atomic"
+          ^ " " ^ Symbol.name x_0
+          ^ ")")
+   
 
    (* Equality *)
 
@@ -129,6 +172,7 @@ struct
    fun eqMode (x: mode) (y: mode) = x = y
    fun eqPos (x: pos) (y: pos) = x = y
    fun eqNeg (x: neg) (y: neg) = x = y
+   fun eqHead (x: head) (y: head) = x = y
    
    
    (* Map helpers: sub *)
@@ -141,18 +185,32 @@ struct
 
    and subWorld x_ = 
       case prjWorld x_ of
-         WSgn =>
-         (fn x => x)
+         WHA x_0 =>
+         subNeg x_0 o
+         DiscMap.sub 0
+       | WHS x_0 =>
+         subPos x_0 o
+         DiscMap.sub 1
+       | WSgn =>
+         DiscMap.sub 2
    
    and subRel x_ = 
       case prjRel x_ of
-         Con (x_0, x_1) =>
+         HeadA (x_0, x_1) =>
+         subHead x_1 o
+         subNeg x_0 o
+         DiscMap.sub 0
+       | HeadS (x_0, x_1) =>
+         subHead x_1 o
+         subPos x_0 o
+         DiscMap.sub 1
+       | Con (x_0, x_1) =>
          subNeg x_1 o
          subT x_0 o
-         DiscMap.sub 0
+         DiscMap.sub 2
        | Typ x_0 =>
          subT x_0 o
-         DiscMap.sub 1
+         DiscMap.sub 3
    
    and subMode x_ = 
       case prjMode x_ of
@@ -193,6 +251,14 @@ struct
          subT x_0 o
          DiscMap.sub 3
    
+   and subHead x_ = 
+      case prjHead x_ of
+         Atomic x_0 =>
+         subT x_0 o
+         DiscMap.sub 0
+       | Monadic =>
+         DiscMap.sub 1
+   
    
    (* Map helpers: unzip *)
 
@@ -204,18 +270,32 @@ struct
 
    and unzipWorld x_ = 
       case prjWorld x_ of
-         WSgn =>
-         (fn x => x)
+         WHA x_0 =>
+         unzipNeg x_0 o
+         DiscMap.unzip (0, 3)
+       | WHS x_0 =>
+         unzipPos x_0 o
+         DiscMap.unzip (1, 3)
+       | WSgn =>
+         DiscMap.unzip (2, 3)
    
    and unzipRel x_ = 
       case prjRel x_ of
-         Con (x_0, x_1) =>
+         HeadA (x_0, x_1) =>
+         unzipHead x_1 o
+         unzipNeg x_0 o
+         DiscMap.unzip (0, 4)
+       | HeadS (x_0, x_1) =>
+         unzipHead x_1 o
+         unzipPos x_0 o
+         DiscMap.unzip (1, 4)
+       | Con (x_0, x_1) =>
          unzipNeg x_1 o
          unzipT x_0 o
-         DiscMap.unzip (0, 2)
+         DiscMap.unzip (2, 4)
        | Typ x_0 =>
          unzipT x_0 o
-         DiscMap.unzip (1, 2)
+         DiscMap.unzip (3, 4)
    
    and unzipMode x_ = 
       case prjMode x_ of
@@ -256,6 +336,14 @@ struct
          unzipT x_0 o
          DiscMap.unzip (3, 4)
    
+   and unzipHead x_ = 
+      case prjHead x_ of
+         Atomic x_0 =>
+         unzipT x_0 o
+         DiscMap.unzip (0, 2)
+       | Monadic =>
+         DiscMap.unzip (1, 2)
+   
    
    (* Maps *)
 
@@ -292,6 +380,13 @@ struct
       type key = neg
       val unzip = unzipNeg
       val sub = subNeg
+   end)
+
+   structure MapHead = DiscMapFn
+   (struct
+      type key = head
+      val unzip = unzipHead
+      val sub = subHead
    end)
 
 end

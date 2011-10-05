@@ -21,4 +21,28 @@ wSgn: world.
 typ: t -> rel @ wSgn.
 con: t -> neg -> rel @ wSgn.
 
+// Heads can be monadic or atomic
+head: type.
+monadic: head.
+atomic: t -> head.
 
+// If right-positive focused or right-negative inverting, the end result will
+// be one or more stable sequents (a negative atomic proposition or a lax 
+// judgment) by a similar token, if left-negative-focused, the left-focus
+// will eventually blur (requiring that the conclusion be lax) or reach a 
+// negative atomic proposition (requiring that that negative atomic 
+// proposition be at the head). These "ultimate outcomes" are the head(s) of 
+// the proposition, and are calculuated by these relations.
+wHS: pos -> world.
+wHA: neg -> world.
+headS: {S: pos} {H: head} rel @ wHS S.
+headA: {A: neg} {H: head} rel @ wHA A.
+
+headA (atom Q) (atomic Q).
+headA (monad B) monadic.
+headA A H -> headA (lolli B A) H.
+headA A H -> headA (with A B) H.
+headA A H -> headA (with B A) H.
+headA A H -> headS (down B A) H.
+headS A H -> headS (tensor A B) H.
+headS A H -> headS (tensor B A) H.

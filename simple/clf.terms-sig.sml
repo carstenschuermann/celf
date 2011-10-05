@@ -5,19 +5,26 @@ sig
    type mode
    type pos
    type neg
+   type head
    
    datatype world_view =
       WSgn
+    | WHS of pos
+    | WHA of neg
    structure MapWorld: DISC_MAP where type key = world
    val strWorld: world -> String.string
    val injWorld: world_view -> world
    val prjWorld: world -> world_view
    val eqWorld: world -> world -> bool
    val WSgn': world
+   val WHS': pos -> world
+   val WHA': neg -> world
    
    datatype rel_view =
       Typ of Symbol.symbol
     | Con of Symbol.symbol * neg
+    | HeadS of pos * head
+    | HeadA of neg * head
    structure MapRel: DISC_MAP where type key = rel
    val strRel: rel -> String.string
    val injRel: rel_view -> rel
@@ -25,6 +32,8 @@ sig
    val eqRel: rel -> rel -> bool
    val Typ': Symbol.symbol -> rel
    val Con': Symbol.symbol * neg -> rel
+   val HeadS': pos * head -> rel
+   val HeadA': neg * head -> rel
    
    datatype mode_view =
       Per
@@ -66,4 +75,15 @@ sig
    val Monad': pos -> neg
    val Lolli': pos * neg -> neg
    val With': neg * neg -> neg
+   
+   datatype head_view =
+      Monadic
+    | Atomic of Symbol.symbol
+   structure MapHead: DISC_MAP where type key = head
+   val strHead: head -> String.string
+   val injHead: head_view -> head
+   val prjHead: head -> head_view
+   val eqHead: head -> head -> bool
+   val Monadic': head
+   val Atomic': Symbol.symbol -> head
 end
