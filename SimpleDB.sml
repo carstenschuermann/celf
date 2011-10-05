@@ -63,16 +63,18 @@ fun add dec =
 fun conclude () = 
   let in
     print ("==SimpleDB: Concluding==\n")
+    ; print ("  Subordination relation:\n")
+    ; app (printSubord "    ") (!ClfTables.subord_1)
     ; if null (ClfTables.subord_2_lookup
                 (!ClfTables.subord_2, T.Monadic'))
-      then print ("Strongly in the semantic effects fragment; monadic\
-                  \ is not subordinate to anything.\n")
+      then print ("Strongly in the semantic effects fragment;\n\
+                  \monadic is not subordinate to anything.\n")
       else if null (ClfTables.subord_0_lookup
                      (!ClfTables.subord_0, (T.Monadic', T.Monadic')))
-      then print ("Weakly in the semantic effects fragment; monadic\
-                  \ is not subordinate to itself.\n\n")        
-      else print ("Not in the semantic effects fragment; monadic\
-                  \ is self-subordinate\n")
+      then print ("Weakly in the semantic effects fragment;\n\
+                  \monadic is not subordinate to itself.\n\n")        
+      else print ("Not in the semantic effects fragment;\n\
+                  \monadic is self-subordinate\n")
   end
 
 end
