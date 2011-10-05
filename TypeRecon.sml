@@ -196,7 +196,9 @@ fun reconstructDecl (ldec as (_, dec)) =
 
 
 (* reconstructSignature : (int * decl) list -> unit *)
-fun reconstructSignature prog = app reconstructDecl prog handle ExnStopCelf => ()
+fun reconstructSignature prog = 
+  (app reconstructDecl prog handle ExnStopCelf => ()
+  ; SimpleDB.conclude ())
 
 (* resetSignature : unit -> unit *)
 fun resetSignature () =

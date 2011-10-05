@@ -40,11 +40,12 @@ fun add dec =
           val () = ClfTables.assertCon (x, ty)
 
           (* Calculate new subordination information *)
-          val subterms = ClfSearch.saturateWSubordA ty T.MapWorld.empty
+          val _ = ClfSearch.saturateWSubordA ty T.MapWorld.empty
 	  val subords = ClfTables.subordA_1_lookup (!ClfTables.subordA_1, ty)
 
           (* Add new subordination information to database *)
           val () = app ClfTables.assertSubord subords
+          val _ = ClfSearch.saturateWSubord T.MapWorld.empty
 
           fun printme (h1, h2) = 
             print ("    " ^ T.strHead h1 ^ " <| " ^ T.strHead h2 ^ "\n")
@@ -57,6 +58,21 @@ fun add dec =
     | TypeAbbrev _ => () (* Nothing to do *)
     | ObjAbbrev _ => () (* Nothing to do *)
     | Query _ => () (* Nothing to do *)
+  end
+
+fun conclude () = 
+  let in
+    print ("==SimpleDB: Concluding==\n")
+    ; if null (ClfTables.subord_2_lookup
+                (!ClfTables.subord_2, T.Monadic'))
+      then print ("Strongly in the semantic effects fragment; monadic\
+                  \ is not subordinate to anything.\n")
+      else if null (ClfTables.subord_0_lookup
+                     (!ClfTables.subord_0, (T.Monadic', T.Monadic')))
+      then print ("Weakly in the semantic effects fragment; monadic\
+                  \ is not subordinate to itself.\n\n")        
+      else print ("Not in the semantic effects fragment; monadic\
+                  \ is self-subordinate\n")
   end
 
 end
