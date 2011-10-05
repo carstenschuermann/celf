@@ -31,7 +31,7 @@ atomic: t -> head.
 
 // If right-positive focused or right-negative inverting, the end result will
 // be one or more stable sequents (a negative atomic proposition or a lax 
-// judgment) by a similar token, if left-negative-focused, the left-focus
+// judgment). By a similar token, if left-negative-focused, the left-focus
 // will eventually blur (requiring that the conclusion be lax) or reach a 
 // negative atomic proposition (requiring that that negative atomic 
 // proposition be at the head). These "ultimate outcomes" are the head(s) of 
@@ -69,18 +69,12 @@ headS S H1, headA A H2
 
 // These other rules just look through a signature constant looking for
 // subordination information to learn. 
-subordA A H1 H2
-  -> subordS (down P A) H1 H2.
-subordS S1 H1 H2
-  -> subordS (tensor S1 S2) H1 H2.
-subordS S2 H1 H2
-  -> subordS (tensor S1 S2) H1 H2.
-subordS S H1 H2
-  -> subordA (monad S) H1 H2.
-subordA A H1 H2
-  -> subordA (lolli S A) H1 H2.
-subordS S H1 H2
-  -> subordA (lolli S A) H1 H2.
+subordA A H1 H2 -> subordS (down P A) H1 H2.
+subordS S H1 H2 -> subordS (tensor S S2) H1 H2.
+subordS S H1 H2 -> subordS (tensor S1 S) H1 H2.
+subordS S H1 H2 -> subordA (monad S) H1 H2.
+subordA A H1 H2 -> subordA (lolli S A) H1 H2.
+subordS S H1 H2 -> subordA (lolli S A) H1 H2.
 
 
 // The actual subordination relation is populated explicitly by assertions
