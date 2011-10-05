@@ -6,8 +6,11 @@ struct
    
    and world_view =
       WSgn
-    | WHS of pos
-    | WHA of neg
+    | WHeadS of pos
+    | WHeadA of neg
+    | WSubordS of pos
+    | WSubordA of neg
+    | WSubord
    and world = injWorld of world_view
    
    and rel_view =
@@ -15,6 +18,9 @@ struct
     | Con of Symbol.symbol * neg
     | HeadS of pos * head
     | HeadA of neg * head
+    | SubordS of pos * head * head
+    | SubordA of neg * head * head
+    | Subord of head * head
    and rel = injRel of rel_view
    
    and mode_view =
@@ -51,12 +57,18 @@ struct
    fun prjNeg (injNeg x) = x
    fun prjHead (injHead x) = x
    val WSgn' = injWorld WSgn
-   val WHS' = injWorld o WHS
-   val WHA' = injWorld o WHA
+   val WHeadS' = injWorld o WHeadS
+   val WHeadA' = injWorld o WHeadA
+   val WSubordS' = injWorld o WSubordS
+   val WSubordA' = injWorld o WSubordA
+   val WSubord' = injWorld WSubord
    val Typ' = injRel o Typ
    val Con' = injRel o Con
    val HeadS' = injRel o HeadS
    val HeadA' = injRel o HeadA
+   val SubordS' = injRel o SubordS
+   val SubordA' = injRel o SubordA
+   val Subord' = injRel o Subord
    val Per' = injMode Per
    val Aff' = injMode Aff
    val Lin' = injMode Lin
@@ -79,14 +91,24 @@ struct
       case prjWorld x_ of
          WSgn =>
          "wSgn"
-       | WHS x_0 =>
-         ("(wHS"
+       | WHeadS x_0 =>
+         ("(wHeadS"
           ^ " " ^ strPos x_0
           ^ ")")
-       | WHA x_0 =>
-         ("(wHA"
+       | WHeadA x_0 =>
+         ("(wHeadA"
           ^ " " ^ strNeg x_0
           ^ ")")
+       | WSubordS x_0 =>
+         ("(wSubordS"
+          ^ " " ^ strPos x_0
+          ^ ")")
+       | WSubordA x_0 =>
+         ("(wSubordA"
+          ^ " " ^ strNeg x_0
+          ^ ")")
+       | WSubord =>
+         "wSubord"
    
    and strRel x_ = 
       case prjRel x_ of
@@ -107,6 +129,23 @@ struct
        | HeadA (x_0, x_1) =>
          ("(headA"
           ^ " " ^ strNeg x_0
+          ^ " " ^ strHead x_1
+          ^ ")")
+       | SubordS (x_0, x_1, x_2) =>
+         ("(subordS"
+          ^ " " ^ strPos x_0
+          ^ " " ^ strHead x_1
+          ^ " " ^ strHead x_2
+          ^ ")")
+       | SubordA (x_0, x_1, x_2) =>
+         ("(subordA"
+          ^ " " ^ strNeg x_0
+          ^ " " ^ strHead x_1
+          ^ " " ^ strHead x_2
+          ^ ")")
+       | Subord (x_0, x_1) =>
+         ("(subord"
+          ^ " " ^ strHead x_0
           ^ " " ^ strHead x_1
           ^ ")")
    
@@ -185,32 +224,54 @@ struct
 
    and subWorld x_ = 
       case prjWorld x_ of
-         WHA x_0 =>
-         subNeg x_0 o
+         WSubord =>
          DiscMap.sub 0
-       | WHS x_0 =>
-         subPos x_0 o
+       | WSubordA x_0 =>
+         subNeg x_0 o
          DiscMap.sub 1
-       | WSgn =>
+       | WSubordS x_0 =>
+         subPos x_0 o
          DiscMap.sub 2
+       | WHeadA x_0 =>
+         subNeg x_0 o
+         DiscMap.sub 3
+       | WHeadS x_0 =>
+         subPos x_0 o
+         DiscMap.sub 4
+       | WSgn =>
+         DiscMap.sub 5
    
    and subRel x_ = 
       case prjRel x_ of
-         HeadA (x_0, x_1) =>
+         Subord (x_0, x_1) =>
+         subHead x_1 o
+         subHead x_0 o
+         DiscMap.sub 0
+       | SubordA (x_0, x_1, x_2) =>
+         subHead x_2 o
          subHead x_1 o
          subNeg x_0 o
-         DiscMap.sub 0
+         DiscMap.sub 1
+       | SubordS (x_0, x_1, x_2) =>
+         subHead x_2 o
+         subHead x_1 o
+         subPos x_0 o
+         DiscMap.sub 2
+       | HeadA (x_0, x_1) =>
+         subHead x_1 o
+         subNeg x_0 o
+         DiscMap.sub 3
        | HeadS (x_0, x_1) =>
          subHead x_1 o
          subPos x_0 o
-         DiscMap.sub 1
+         DiscMap.sub 4
        | Con (x_0, x_1) =>
          subNeg x_1 o
          subT x_0 o
-         DiscMap.sub 2
+         DiscMap.sub 5
        | Typ x_0 =>
          subT x_0 o
-         DiscMap.sub 3
+         DiscMap.sub 6
    
    and subMode x_ = 
       case prjMode x_ of
@@ -270,32 +331,54 @@ struct
 
    and unzipWorld x_ = 
       case prjWorld x_ of
-         WHA x_0 =>
+         WSubord =>
+         DiscMap.unzip (0, 6)
+       | WSubordA x_0 =>
          unzipNeg x_0 o
-         DiscMap.unzip (0, 3)
-       | WHS x_0 =>
+         DiscMap.unzip (1, 6)
+       | WSubordS x_0 =>
          unzipPos x_0 o
-         DiscMap.unzip (1, 3)
+         DiscMap.unzip (2, 6)
+       | WHeadA x_0 =>
+         unzipNeg x_0 o
+         DiscMap.unzip (3, 6)
+       | WHeadS x_0 =>
+         unzipPos x_0 o
+         DiscMap.unzip (4, 6)
        | WSgn =>
-         DiscMap.unzip (2, 3)
+         DiscMap.unzip (5, 6)
    
    and unzipRel x_ = 
       case prjRel x_ of
-         HeadA (x_0, x_1) =>
+         Subord (x_0, x_1) =>
+         unzipHead x_1 o
+         unzipHead x_0 o
+         DiscMap.unzip (0, 7)
+       | SubordA (x_0, x_1, x_2) =>
+         unzipHead x_2 o
          unzipHead x_1 o
          unzipNeg x_0 o
-         DiscMap.unzip (0, 4)
+         DiscMap.unzip (1, 7)
+       | SubordS (x_0, x_1, x_2) =>
+         unzipHead x_2 o
+         unzipHead x_1 o
+         unzipPos x_0 o
+         DiscMap.unzip (2, 7)
+       | HeadA (x_0, x_1) =>
+         unzipHead x_1 o
+         unzipNeg x_0 o
+         DiscMap.unzip (3, 7)
        | HeadS (x_0, x_1) =>
          unzipHead x_1 o
          unzipPos x_0 o
-         DiscMap.unzip (1, 4)
+         DiscMap.unzip (4, 7)
        | Con (x_0, x_1) =>
          unzipNeg x_1 o
          unzipT x_0 o
-         DiscMap.unzip (2, 4)
+         DiscMap.unzip (5, 7)
        | Typ x_0 =>
          unzipT x_0 o
-         DiscMap.unzip (3, 4)
+         DiscMap.unzip (6, 7)
    
    and unzipMode x_ = 
       case prjMode x_ of

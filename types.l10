@@ -1,3 +1,5 @@
+// elton -d simple -
+
 // CLF has three modes, or levels of reasoning
 mode: type.
 per: mode. // persistent (called INT for intuitionstic in Anders' code)
@@ -21,6 +23,7 @@ wSgn: world.
 typ: t -> rel @ wSgn.
 con: t -> neg -> rel @ wSgn.
 
+
 // Heads can be monadic or atomic
 head: type.
 monadic: head.
@@ -33,10 +36,10 @@ atomic: t -> head.
 // negative atomic proposition (requiring that that negative atomic 
 // proposition be at the head). These "ultimate outcomes" are the head(s) of 
 // the proposition, and are calculuated by these relations.
-wHS: pos -> world.
-wHA: neg -> world.
-headS: {S: pos} {H: head} rel @ wHS S.
-headA: {A: neg} {H: head} rel @ wHA A.
+wHeadS: pos -> world.
+wHeadA: neg -> world.
+headS: {S: pos} {H: head} rel @ wHeadS S.
+headA: {A: neg} {H: head} rel @ wHeadA A.
 
 headA (atom Q) (atomic Q).
 headA (monad B) monadic.
@@ -46,3 +49,42 @@ headA A H -> headA (with B A) H.
 headA A H -> headS (down B A) H.
 headS A H -> headS (tensor A B) H.
 headS A H -> headS (tensor B A) H.
+
+// L10 can't currently handle this, should be able to:
+// wHC: world.
+// headC: t -> head -> rel @ wHC.
+// con C A -> head A H -> headC C H.
+
+
+// Deriving subordination information from types
+wSubordS: pos -> world.
+wSubordA: neg -> world.
+
+subordS: {S: pos} {H1: head} {H2: head} rel @ wSubordS S.
+subordA: {A: neg} {H1: head} {H2: head} rel @ wSubordA A.
+
+// Key: the head of a premise is subordinate to the head of a conclusion
+headS S H1, headA A H2
+  -> subordA (lolli S A) H1 H2.
+
+// These other rules just look through a signature constant looking for
+// subordination information to learn. 
+subordA A H1 H2
+  -> subordS (down P A) H1 H2.
+subordS S1 H1 H2
+  -> subordS (tensor S1 S2) H1 H2.
+subordS S2 H1 H2
+  -> subordS (tensor S1 S2) H1 H2.
+subordS S H1 H2
+  -> subordA (monad S) H1 H2.
+subordA A H1 H2
+  -> subordA (lolli S A) H1 H2.
+subordS S H1 H2
+  -> subordA (lolli S A) H1 H2.
+
+
+// The actual subordination relation is populated explicitly by assertions
+wSubord: world.
+subord: head -> head -> rel @ wSubord.
+
+subord H1 H2, subord H2 H3 -> subord H1 H3.

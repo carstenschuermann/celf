@@ -25,18 +25,34 @@ fun add dec =
       ConstDecl (a, num_implicit_pis, Ki _) => 
         let 
           val x = Symbol.symbol a
+
+          (* Add basic fact to database *)
+          val () = ClfTables.assertTyp x  
         in
           print ("==SimpleDB: Type Declaration " ^ a ^ "==\n") 
-          ; ClfTables.assertTyp x
         end
     | ConstDecl (c, num_implicit_pis, Ty typA) => 
         let 
           val x = Symbol.symbol c
           val ty = transA typA
+
+          (* Add signature fact to database *)
+          val () = ClfTables.assertCon (x, ty)
+
+          (* Calculate new subordination information *)
+          val subterms = ClfSearch.saturateWSubordA ty T.MapWorld.empty
+	  val subords = ClfTables.subordA_1_lookup (!ClfTables.subordA_1, ty)
+
+          (* Add new subordination information to database *)
+          val () = app ClfTables.assertSubord subords
+
+          fun printme (h1, h2) = 
+            print ("    " ^ T.strHead h1 ^ " <| " ^ T.strHead h2 ^ "\n")
         in 
           print ("==SimpleDB: Constant Declaration ")
           ; print (c ^ ": " ^ T.strNeg ty ^ "==\n")
-          ; ClfTables.assertCon (x, ty)
+          ; print ("    Discovered subordination facts: \n")
+          ; app printme subords 
         end
     | TypeAbbrev _ => () (* Nothing to do *)
     | ObjAbbrev _ => () (* Nothing to do *)
