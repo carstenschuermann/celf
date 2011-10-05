@@ -388,30 +388,43 @@ struct
    fun fake () = ()
    
    (* subord H1 H2 *)
-   and exec14 () =
-      app (exec14_app)
+   and exec15 () =
+      app (exec15_app)
          (subord_1_lookup (!subord_1, ()))
 
-   and exec14_app (x_0, x_1) =
-      exec14_1 (x_0, x_1) ()
+   and exec15_app (x_0, x_1) =
+      exec15_1 (x_0, x_1) ()
    
    (* subord H2 H3 *)
-   and exec14_1 (H1, H2) () =
-      app (exec14_1_app (H1, H2))
+   and exec15_1 (H1, H2) () =
+      app (exec15_1_app (H1, H2))
          (subord_2_lookup (!subord_2, H2))
 
-   and exec14_1_app (H1, H2) x_1 =
-      exec14_2 (H1, x_1) ()
+   and exec15_1_app (H1, H2) x_1 =
+      exec15_2 (H1, x_1) ()
    
    (* subord H1 H3 *)
-   and exec14_2 (H1, H3) () =
+   and exec15_2 (H1, H3) () =
      (assertSubord (H1, H3)
      )
    
    (* subordS S H1 H2 *)
+   and exec14 (S, A) () =
+      app (exec14_app (S, A))
+         (subordS_1_lookup (!subordS_1, S))
+
+   and exec14_app (S, A) (x_1, x_2) =
+      exec14_1 (S, A, x_1, x_2) ()
+   
+   (* subordA (lolli S A) H1 H2 *)
+   and exec14_1 (S, A, H1, H2) () =
+     (assertSubordA ((Lolli' (S, A)), H1, H2)
+     )
+   
+   (* subordA A H1 H2 *)
    and exec13 (S, A) () =
       app (exec13_app (S, A))
-         (subordS_1_lookup (!subordS_1, S))
+         (subordA_1_lookup (!subordA_1, A))
 
    and exec13_app (S, A) (x_1, x_2) =
       exec13_1 (S, A, x_1, x_2) ()
@@ -421,17 +434,17 @@ struct
      (assertSubordA ((Lolli' (S, A)), H1, H2)
      )
    
-   (* subordA A H1 H2 *)
-   and exec12 (S, A) () =
-      app (exec12_app (S, A))
-         (subordA_1_lookup (!subordA_1, A))
+   (* subordS S H1 H2 *)
+   and exec12 S () =
+      app (exec12_app S)
+         (subordS_1_lookup (!subordS_1, S))
 
-   and exec12_app (S, A) (x_1, x_2) =
-      exec12_1 (S, A, x_1, x_2) ()
+   and exec12_app S (x_1, x_2) =
+      exec12_1 (S, x_1, x_2) ()
    
-   (* subordA (lolli S A) H1 H2 *)
-   and exec12_1 (S, A, H1, H2) () =
-     (assertSubordA ((Lolli' (S, A)), H1, H2)
+   (* subordA (monad S) H1 H2 *)
+   and exec12_1 (S, H1, H2) () =
+     (assertSubordA ((Monad' S), H1, H2)
      )
    
    (* subordS S2 H1 H2 *)

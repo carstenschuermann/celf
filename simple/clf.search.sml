@@ -18,7 +18,6 @@ struct
             ((fn x => x)
             , [])
          val worldmap' = child_searches worldmap
-         val () = print ("Visiting " ^ strWorld w ^ "\n")
          val () = loop rulefns
       in
          worldmap'
@@ -47,7 +46,6 @@ struct
                  [])
             )
          val worldmap' = child_searches worldmap
-         val () = print ("Visiting " ^ strWorld w ^ "\n")
          val () = loop rulefns
       in
          worldmap'
@@ -81,7 +79,6 @@ struct
                  [])
             )
          val worldmap' = child_searches worldmap
-         val () = print ("Visiting " ^ strWorld w ^ "\n")
          val () = loop rulefns
       in
          worldmap'
@@ -110,7 +107,6 @@ struct
                  [])
             )
          val worldmap' = child_searches worldmap
-         val () = print ("Visiting " ^ strWorld w ^ "\n")
          val () = loop rulefns
       in
          worldmap'
@@ -133,18 +129,18 @@ struct
                 o saturateWSubordA x_0_1
                 o saturateWSubordS x_0_0
                , exec8 (x_0_0, x_0_1) ::
-                 exec12 (x_0_0, x_0_1) ::
                  exec13 (x_0_0, x_0_1) ::
+                 exec14 (x_0_0, x_0_1) ::
                  [])
              | Monad x_0_0 => 
-               ((fn x => x)
-               , [])
+               (saturateWSubordS x_0_0
+               , exec12 x_0_0 ::
+                 [])
              | Atom x_0_0 => 
                ((fn x => x)
                , [])
             )
          val worldmap' = child_searches worldmap
-         val () = print ("Visiting " ^ strWorld w ^ "\n")
          val () = loop rulefns
       in
          worldmap'
@@ -159,10 +155,9 @@ struct
          val (child_searches, rulefns) = 
             (saturateWSubord
              o saturateWSubord
-            , exec14 ::
+            , exec15 ::
               [])
          val worldmap' = child_searches worldmap
-         val () = print ("Visiting " ^ strWorld w ^ "\n")
          val () = loop rulefns
       in
          worldmap'

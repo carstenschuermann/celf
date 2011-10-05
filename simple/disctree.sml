@@ -6,7 +6,6 @@
  * polymorphic recursion, which would enforce the shape invariants that
  * we're counting on. *)  
 
-
 structure DiscMap:> sig
    type 'a map 
    exception NotThere
