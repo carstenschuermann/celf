@@ -1,4 +1,4 @@
-// elton -d simple -
+// $ elton -d simple -p clf types.l10
 
 // CLF has three modes, or levels of reasoning
 mode: type.
