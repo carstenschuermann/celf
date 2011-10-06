@@ -11,6 +11,7 @@ struct
     | WSubordS of pos
     | WSubordA of neg
     | WSubord
+    | WPosAtom
    and world = injWorld of world_view
    
    and rel_view =
@@ -21,6 +22,7 @@ struct
     | SubordS of pos * head * head
     | SubordA of neg * head * head
     | Subord of head * head
+    | PosAtom of Symbol.symbol
    and rel = injRel of rel_view
    
    and mode_view =
@@ -62,6 +64,7 @@ struct
    val WSubordS' = injWorld o WSubordS
    val WSubordA' = injWorld o WSubordA
    val WSubord' = injWorld WSubord
+   val WPosAtom' = injWorld WPosAtom
    val Typ' = injRel o Typ
    val Con' = injRel o Con
    val HeadS' = injRel o HeadS
@@ -69,6 +72,7 @@ struct
    val SubordS' = injRel o SubordS
    val SubordA' = injRel o SubordA
    val Subord' = injRel o Subord
+   val PosAtom' = injRel o PosAtom
    val Per' = injMode Per
    val Aff' = injMode Aff
    val Lin' = injMode Lin
@@ -109,6 +113,8 @@ struct
           ^ ")")
        | WSubord =>
          "wSubord"
+       | WPosAtom =>
+         "wPosAtom"
    
    and strRel x_ = 
       case prjRel x_ of
@@ -147,6 +153,10 @@ struct
          ("(subord"
           ^ " " ^ strHead x_0
           ^ " " ^ strHead x_1
+          ^ ")")
+       | PosAtom x_0 =>
+         ("(posAtom"
+          ^ " " ^ Symbol.name x_0
           ^ ")")
    
    and strMode x_ = 
@@ -224,54 +234,59 @@ struct
 
    and subWorld x_ = 
       case prjWorld x_ of
-         WSubord =>
+         WPosAtom =>
          DiscMap.sub 0
+       | WSubord =>
+         DiscMap.sub 1
        | WSubordA x_0 =>
          subNeg x_0 o
-         DiscMap.sub 1
+         DiscMap.sub 2
        | WSubordS x_0 =>
          subPos x_0 o
-         DiscMap.sub 2
+         DiscMap.sub 3
        | WHeadA x_0 =>
          subNeg x_0 o
-         DiscMap.sub 3
+         DiscMap.sub 4
        | WHeadS x_0 =>
          subPos x_0 o
-         DiscMap.sub 4
-       | WSgn =>
          DiscMap.sub 5
+       | WSgn =>
+         DiscMap.sub 6
    
    and subRel x_ = 
       case prjRel x_ of
-         Subord (x_0, x_1) =>
+         PosAtom x_0 =>
+         subT x_0 o
+         DiscMap.sub 0
+       | Subord (x_0, x_1) =>
          subHead x_1 o
          subHead x_0 o
-         DiscMap.sub 0
+         DiscMap.sub 1
        | SubordA (x_0, x_1, x_2) =>
          subHead x_2 o
          subHead x_1 o
          subNeg x_0 o
-         DiscMap.sub 1
+         DiscMap.sub 2
        | SubordS (x_0, x_1, x_2) =>
          subHead x_2 o
          subHead x_1 o
          subPos x_0 o
-         DiscMap.sub 2
+         DiscMap.sub 3
        | HeadA (x_0, x_1) =>
          subHead x_1 o
          subNeg x_0 o
-         DiscMap.sub 3
+         DiscMap.sub 4
        | HeadS (x_0, x_1) =>
          subHead x_1 o
          subPos x_0 o
-         DiscMap.sub 4
+         DiscMap.sub 5
        | Con (x_0, x_1) =>
          subNeg x_1 o
          subT x_0 o
-         DiscMap.sub 5
+         DiscMap.sub 6
        | Typ x_0 =>
          subT x_0 o
-         DiscMap.sub 6
+         DiscMap.sub 7
    
    and subMode x_ = 
       case prjMode x_ of
@@ -331,54 +346,59 @@ struct
 
    and unzipWorld x_ = 
       case prjWorld x_ of
-         WSubord =>
-         DiscMap.unzip (0, 6)
+         WPosAtom =>
+         DiscMap.unzip (0, 7)
+       | WSubord =>
+         DiscMap.unzip (1, 7)
        | WSubordA x_0 =>
          unzipNeg x_0 o
-         DiscMap.unzip (1, 6)
+         DiscMap.unzip (2, 7)
        | WSubordS x_0 =>
          unzipPos x_0 o
-         DiscMap.unzip (2, 6)
+         DiscMap.unzip (3, 7)
        | WHeadA x_0 =>
          unzipNeg x_0 o
-         DiscMap.unzip (3, 6)
+         DiscMap.unzip (4, 7)
        | WHeadS x_0 =>
          unzipPos x_0 o
-         DiscMap.unzip (4, 6)
+         DiscMap.unzip (5, 7)
        | WSgn =>
-         DiscMap.unzip (5, 6)
+         DiscMap.unzip (6, 7)
    
    and unzipRel x_ = 
       case prjRel x_ of
-         Subord (x_0, x_1) =>
+         PosAtom x_0 =>
+         unzipT x_0 o
+         DiscMap.unzip (0, 8)
+       | Subord (x_0, x_1) =>
          unzipHead x_1 o
          unzipHead x_0 o
-         DiscMap.unzip (0, 7)
+         DiscMap.unzip (1, 8)
        | SubordA (x_0, x_1, x_2) =>
          unzipHead x_2 o
          unzipHead x_1 o
          unzipNeg x_0 o
-         DiscMap.unzip (1, 7)
+         DiscMap.unzip (2, 8)
        | SubordS (x_0, x_1, x_2) =>
          unzipHead x_2 o
          unzipHead x_1 o
          unzipPos x_0 o
-         DiscMap.unzip (2, 7)
+         DiscMap.unzip (3, 8)
        | HeadA (x_0, x_1) =>
          unzipHead x_1 o
          unzipNeg x_0 o
-         DiscMap.unzip (3, 7)
+         DiscMap.unzip (4, 8)
        | HeadS (x_0, x_1) =>
          unzipHead x_1 o
          unzipPos x_0 o
-         DiscMap.unzip (4, 7)
+         DiscMap.unzip (5, 8)
        | Con (x_0, x_1) =>
          unzipNeg x_1 o
          unzipT x_0 o
-         DiscMap.unzip (5, 7)
+         DiscMap.unzip (6, 8)
        | Typ x_0 =>
          unzipT x_0 o
-         DiscMap.unzip (6, 7)
+         DiscMap.unzip (7, 8)
    
    and unzipMode x_ = 
       case prjMode x_ of

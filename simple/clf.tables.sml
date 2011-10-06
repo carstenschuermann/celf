@@ -24,6 +24,16 @@ struct
          () :: y_1)
       end
    
+   type typ_1 = Symbol.symbol list 
+   val typ_1: typ_1 ref = ref []
+   fun typ_1_lookup (x: typ_1, ()) = 
+      x
+   fun typ_1_insert (y_0: typ_1, (), x_0) = 
+      let
+      in
+         x_0 :: y_0
+      end
+   
    type con_0 = unit list MapNeg.map MapX.map
    val con_0: con_0 ref = ref MapX.empty
    fun con_0_lookup (x: con_0, (x_0, x_1)) = 
@@ -268,24 +278,60 @@ struct
          () :: y_2))
       end
    
-   type subord_1 = (head * head) list 
-   val subord_1: subord_1 ref = ref []
-   fun subord_1_lookup (x: subord_1, ()) = 
+   type subord_1 = unit list MapX.map
+   val subord_1: subord_1 ref = ref MapX.empty
+   fun subord_1_lookup (x: subord_1, x_0_0) = 
+      (case MapX.find (x, x_0_0) of
+         NONE => []
+       | SOME x => 
+         x)
+   fun subord_1_insert (y_0: subord_1, x_0_0, ()) = 
+      let
+         val y_1 = 
+            case MapX.find (y_0, x_0_0) of
+               NONE => []
+             | SOME y => y
+      in
+         MapX.insert (y_0, x_0_0,
+         () :: y_1)
+      end
+   
+   type subord_2 = head list MapX.map
+   val subord_2: subord_2 ref = ref MapX.empty
+   fun subord_2_lookup (x: subord_2, x_1_0) = 
+      (case MapX.find (x, x_1_0) of
+         NONE => []
+       | SOME x => 
+         x)
+   fun subord_2_insert (y_0: subord_2, x_1_0, x_0) = 
+      let
+         val y_1 = 
+            case MapX.find (y_0, x_1_0) of
+               NONE => []
+             | SOME y => y
+      in
+         MapX.insert (y_0, x_1_0,
+         x_0 :: y_1)
+      end
+   
+   type subord_3 = (head * head) list 
+   val subord_3: subord_3 ref = ref []
+   fun subord_3_lookup (x: subord_3, ()) = 
       x
-   fun subord_1_insert (y_0: subord_1, (), (x_0, x_1)) = 
+   fun subord_3_insert (y_0: subord_3, (), (x_0, x_1)) = 
       let
       in
          (x_0, x_1) :: y_0
       end
    
-   type subord_2 = head list MapHead.map
-   val subord_2: subord_2 ref = ref MapHead.empty
-   fun subord_2_lookup (x: subord_2, x_0) = 
+   type subord_4 = head list MapHead.map
+   val subord_4: subord_4 ref = ref MapHead.empty
+   fun subord_4_lookup (x: subord_4, x_0) = 
       (case MapHead.find (x, x_0) of
          NONE => []
        | SOME x => 
          x)
-   fun subord_2_insert (y_0: subord_2, x_0, x_1) = 
+   fun subord_4_insert (y_0: subord_4, x_0, x_1) = 
       let
          val y_1 = 
             case MapHead.find (y_0, x_0) of
@@ -294,6 +340,34 @@ struct
       in
          MapHead.insert (y_0, x_0,
          x_1 :: y_1)
+      end
+   
+   type posAtom_0 = unit list MapX.map
+   val posAtom_0: posAtom_0 ref = ref MapX.empty
+   fun posAtom_0_lookup (x: posAtom_0, x_0) = 
+      (case MapX.find (x, x_0) of
+         NONE => []
+       | SOME x => 
+         x)
+   fun posAtom_0_insert (y_0: posAtom_0, x_0, ()) = 
+      let
+         val y_1 = 
+            case MapX.find (y_0, x_0) of
+               NONE => []
+             | SOME y => y
+      in
+         MapX.insert (y_0, x_0,
+         () :: y_1)
+      end
+   
+   type posAtom_1 = Symbol.symbol list 
+   val posAtom_1: posAtom_1 ref = ref []
+   fun posAtom_1_lookup (x: posAtom_1, ()) = 
+      x
+   fun posAtom_1_insert (y_0: posAtom_1, (), x_0) = 
+      let
+      in
+         x_0 :: y_0
       end
    
    (* Term matching *)
@@ -308,6 +382,7 @@ struct
       in
          (cnt := !cnt + 1
           ; typ_0 := typ_0_insert (!typ_0, x_0, ()) 
+          ; typ_1 := typ_1_insert (!typ_1, (), x_0) 
          )
       end handle Brk => () (* Duplicate assertion *)
 
@@ -376,10 +451,52 @@ struct
             if null (subord_0_lookup (!subord_0, (x_0, x_1)))
             then () else raise Brk
       in
+         (case prjHead x_0 of
+            Atomic x_0_0 => 
+            (case prjHead x_1 of
+               Atomic x_1_0 => 
+               (cnt := !cnt + 1
+                ; subord_0 := subord_0_insert (!subord_0, (x_0, x_1), ()) 
+                ; subord_2 := subord_2_insert (!subord_2, x_1_0, x_0) 
+                ; subord_3 := subord_3_insert (!subord_3, (), (x_0, x_1)) 
+                ; subord_4 := subord_4_insert (!subord_4, x_0, x_1) 
+               )
+             | Monadic => 
+               (cnt := !cnt + 1
+                ; subord_0 := subord_0_insert (!subord_0, (x_0, x_1), ()) 
+                ; subord_1 := subord_1_insert (!subord_1, x_0_0, ()) 
+                ; subord_3 := subord_3_insert (!subord_3, (), (x_0, x_1)) 
+                ; subord_4 := subord_4_insert (!subord_4, x_0, x_1) 
+               )
+            )
+          | Monadic => 
+            (case prjHead x_1 of
+               Atomic x_1_0 => 
+               (cnt := !cnt + 1
+                ; subord_0 := subord_0_insert (!subord_0, (x_0, x_1), ()) 
+                ; subord_2 := subord_2_insert (!subord_2, x_1_0, x_0) 
+                ; subord_3 := subord_3_insert (!subord_3, (), (x_0, x_1)) 
+                ; subord_4 := subord_4_insert (!subord_4, x_0, x_1) 
+               )
+             | Monadic => 
+               (cnt := !cnt + 1
+                ; subord_0 := subord_0_insert (!subord_0, (x_0, x_1), ()) 
+                ; subord_3 := subord_3_insert (!subord_3, (), (x_0, x_1)) 
+                ; subord_4 := subord_4_insert (!subord_4, x_0, x_1) 
+               )
+            )
+         )
+      end handle Brk => () (* Duplicate assertion *)
+
+   fun assertPosAtom x_0 =
+      let
+         val () = 
+            if null (posAtom_0_lookup (!posAtom_0, x_0))
+            then () else raise Brk
+      in
          (cnt := !cnt + 1
-          ; subord_0 := subord_0_insert (!subord_0, (x_0, x_1), ()) 
-          ; subord_1 := subord_1_insert (!subord_1, (), (x_0, x_1)) 
-          ; subord_2 := subord_2_insert (!subord_2, x_0, x_1) 
+          ; posAtom_0 := posAtom_0_insert (!posAtom_0, x_0, ()) 
+          ; posAtom_1 := posAtom_1_insert (!posAtom_1, (), x_0) 
          )
       end handle Brk => () (* Duplicate assertion *)
 
@@ -387,10 +504,52 @@ struct
 
    fun fake () = ()
    
+   (* posAtom Q *)
+   and exec17 () =
+      app (exec17_app)
+         (posAtom_1_lookup (!posAtom_1, ()))
+
+   and exec17_app x_0 =
+      exec17_1 x_0 ()
+   
+   (* posAtom Q *)
+   and exec17_1 Q () =
+     (assertPosAtom Q
+     )
+   
+   (* typ Q *)
+   and exec16 () =
+      app (exec16_app)
+         (typ_1_lookup (!typ_1, ()))
+
+   and exec16_app x_0 =
+      exec16_1 x_0 ()
+   
+   (* subord (atomic Q) monadic *)
+   and exec16_1 Q () =
+      app (exec16_1_app Q)
+         (subord_1_lookup (!subord_1, Q))
+
+   and exec16_1_app Q () =
+      exec16_2 Q ()
+   
+   (* not subord _ (atomic Q) *)
+   and exec16_2 Q () =
+      let
+         val res = subord_2_lookup (!subord_2, Q)
+      in
+         if null res then exec16_3 Q () else ()
+      end
+   
+   (* posAtom Q *)
+   and exec16_3 Q () =
+     (assertPosAtom Q
+     )
+   
    (* subord H1 H2 *)
    and exec15 () =
       app (exec15_app)
-         (subord_1_lookup (!subord_1, ()))
+         (subord_3_lookup (!subord_3, ()))
 
    and exec15_app (x_0, x_1) =
       exec15_1 (x_0, x_1) ()
@@ -398,7 +557,7 @@ struct
    (* subord H2 H3 *)
    and exec15_1 (H1, H2) () =
       app (exec15_1_app (H1, H2))
-         (subord_2_lookup (!subord_2, H2))
+         (subord_4_lookup (!subord_4, H2))
 
    and exec15_1_app (H1, H2) x_1 =
       exec15_2 (H1, x_1) ()
@@ -447,30 +606,30 @@ struct
      (assertSubordA ((Monad' S), H1, H2)
      )
    
-   (* subordS S2 H1 H2 *)
-   and exec11 (S1, S2) () =
-      app (exec11_app (S1, S2))
-         (subordS_1_lookup (!subordS_1, S2))
+   (* subordS S H1 H2 *)
+   and exec11 (S, S1) () =
+      app (exec11_app (S, S1))
+         (subordS_1_lookup (!subordS_1, S))
 
-   and exec11_app (S1, S2) (x_1, x_2) =
-      exec11_1 (x_1, x_2, S1, S2) ()
+   and exec11_app (S, S1) (x_1, x_2) =
+      exec11_1 (S, x_1, x_2, S1) ()
    
-   (* subordS (tensor S1 S2) H1 H2 *)
-   and exec11_1 (H1, H2, S1, S2) () =
-     (assertSubordS ((Tensor' (S1, S2)), H1, H2)
+   (* subordS (tensor S1 S) H1 H2 *)
+   and exec11_1 (S, H1, H2, S1) () =
+     (assertSubordS ((Tensor' (S1, S)), H1, H2)
      )
    
-   (* subordS S1 H1 H2 *)
-   and exec10 (S1, S2) () =
-      app (exec10_app (S1, S2))
-         (subordS_1_lookup (!subordS_1, S1))
+   (* subordS S H1 H2 *)
+   and exec10 (S, S2) () =
+      app (exec10_app (S, S2))
+         (subordS_1_lookup (!subordS_1, S))
 
-   and exec10_app (S1, S2) (x_1, x_2) =
-      exec10_1 (x_1, x_2, S1, S2) ()
+   and exec10_app (S, S2) (x_1, x_2) =
+      exec10_1 (S, x_1, x_2, S2) ()
    
-   (* subordS (tensor S1 S2) H1 H2 *)
-   and exec10_1 (H1, H2, S1, S2) () =
-     (assertSubordS ((Tensor' (S1, S2)), H1, H2)
+   (* subordS (tensor S S2) H1 H2 *)
+   and exec10_1 (S, H1, H2, S2) () =
+     (assertSubordS ((Tensor' (S, S2)), H1, H2)
      )
    
    (* subordA A H1 H2 *)

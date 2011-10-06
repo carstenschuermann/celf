@@ -61,12 +61,17 @@ fun add dec =
   end
 
 fun conclude () = 
-  let in
+  let
+    val _ = ClfSearch.saturateWPosAtom T.MapWorld.empty
+  in
     print ("==SimpleDB: Concluding==\n")
     ; print ("  Subordination relation:\n")
-    ; app (printSubord "    ") (!ClfTables.subord_1)
-    ; if null (ClfTables.subord_2_lookup
-                (!ClfTables.subord_2, T.Monadic'))
+    ; app (printSubord "    ") (!ClfTables.subord_3)
+    ; print ("  Atoms that can behave as positive (modulo linearity issues):\n")
+    ; app (fn x => print ("    " ^ Symbol.name x ^ "\n")) 
+        (!ClfTables.posAtom_1)
+    ; if null (ClfTables.subord_4_lookup
+                (!ClfTables.subord_4, T.Monadic'))
       then print ("Strongly in the semantic effects fragment;\n\
                   \monadic is not subordinate to anything.\n")
       else if null (ClfTables.subord_0_lookup

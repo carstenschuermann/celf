@@ -82,3 +82,13 @@ wSubord: world.
 subord: head -> head -> rel @ wSubord.
 
 subord H1 H2, subord H2 H3 -> subord H1 H3.
+
+wPosAtom: world.
+posAtom: t -> rel @ wPosAtom.
+typ Q, 
+subord (atomic Q) monadic, 
+not (subord _ (atomic Q)) 
+  -> posAtom Q.
+
+// Oh so dumb, just to get an index
+posAtom Q -> posAtom Q.

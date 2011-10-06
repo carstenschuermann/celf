@@ -6,4 +6,5 @@ sig
    val saturateWSubordS: ClfTerms.pos -> unit ClfTerms.MapWorld.map -> unit ClfTerms.MapWorld.map
    val saturateWSubordA: ClfTerms.neg -> unit ClfTerms.MapWorld.map -> unit ClfTerms.MapWorld.map
    val saturateWSubord: unit ClfTerms.MapWorld.map -> unit ClfTerms.MapWorld.map
+   val saturateWPosAtom: unit ClfTerms.MapWorld.map -> unit ClfTerms.MapWorld.map
 end

@@ -14,6 +14,7 @@ sig
     | WSubordS of pos
     | WSubordA of neg
     | WSubord
+    | WPosAtom
    structure MapWorld: DISC_MAP where type key = world
    val strWorld: world -> String.string
    val injWorld: world_view -> world
@@ -25,6 +26,7 @@ sig
    val WSubordS': pos -> world
    val WSubordA': neg -> world
    val WSubord': world
+   val WPosAtom': world
    
    datatype rel_view =
       Typ of Symbol.symbol
@@ -34,6 +36,7 @@ sig
     | SubordS of pos * head * head
     | SubordA of neg * head * head
     | Subord of head * head
+    | PosAtom of Symbol.symbol
    structure MapRel: DISC_MAP where type key = rel
    val strRel: rel -> String.string
    val injRel: rel_view -> rel
@@ -46,6 +49,7 @@ sig
    val SubordS': pos * head * head -> rel
    val SubordA': neg * head * head -> rel
    val Subord': head * head -> rel
+   val PosAtom': Symbol.symbol -> rel
    
    datatype mode_view =
       Per

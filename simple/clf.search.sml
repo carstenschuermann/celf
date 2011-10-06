@@ -96,7 +96,7 @@ struct
                (saturateWSubordS x_0_0
                 o saturateWSubordS x_0_1
                , exec10 (x_0_0, x_0_1) ::
-                 exec11 (x_0_0, x_0_1) ::
+                 exec11 (x_0_1, x_0_0) ::
                  [])
              | One => 
                ((fn x => x)
@@ -156,6 +156,26 @@ struct
             (saturateWSubord
              o saturateWSubord
             , exec15 ::
+              [])
+         val worldmap' = child_searches worldmap
+         val () = loop rulefns
+      in
+         worldmap'
+      end handle Revisit => worldmap
+
+   and saturateWPosAtom worldmap =
+      let
+         val w = WPosAtom'
+         val () = if isSome (MapWorld.find (worldmap, w))
+                  then raise Revisit else ()
+         val worldmap = MapWorld.insert (worldmap, w, ())
+         val (child_searches, rulefns) = 
+            (saturateWSubord
+             o saturateWSubord
+             o saturateWSgn
+             o saturateWPosAtom
+            , exec16 ::
+              exec17 ::
               [])
          val worldmap' = child_searches worldmap
          val () = loop rulefns
